@@ -2,9 +2,9 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.domain.JwtRequest;
-import org.example.domain.JwtResponse;
-import org.example.domain.RefreshJwtRequest;
+import org.example.jwt.JwtRequest;
+import org.example.jwt.JwtResponse;
+import org.example.jwt.RefreshJwtRequest;
 import org.example.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
