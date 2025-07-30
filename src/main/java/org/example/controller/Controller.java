@@ -13,19 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 @RequiredArgsConstructor
 public class Controller {
-    private final AuthService authServive;
+    private final AuthService authService;
 
-    @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("hello/user")
-    public ResponseEntity<String> helloUser() {
-        final JwtAuthentication authInfo = authServive.getAuthInfo();
-        return ResponseEntity.ok("Hello user " + authInfo.getPrincipal() + "!");
+    @PreAuthorize("hasAuthority('GUEST')")
+    @GetMapping("hello/guest")
+    public ResponseEntity<String> helloGuest() {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+        return ResponseEntity.ok("Hello guest " + authInfo.getPrincipal() + "!");
+    }
+
+    @PreAuthorize("hasAuthority('PREMIUM_USER')")
+    @GetMapping("hello/premium-user")
+    public ResponseEntity<String> helloPremiumUser() {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+        return ResponseEntity.ok("Hello premium user " + authInfo.getPrincipal() + "!");
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("hello/admin")
     public ResponseEntity<String> helloAdmin() {
-        final JwtAuthentication authInfo = authServive.getAuthInfo();
+        final JwtAuthentication authInfo = authService.getAuthInfo();
         return ResponseEntity.ok("Hello admin " + authInfo.getPrincipal() + "!");
     }
 
