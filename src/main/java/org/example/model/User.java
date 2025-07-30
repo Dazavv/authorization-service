@@ -1,20 +1,38 @@
 package org.example.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import java.util.Set;
 
-@Getter
-@Setter
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false, length = 20)
     private String login;
+
+    @Column(nullable = false, length = 100)
     private String password;
+
+    @Column(nullable = false, length = 20)
     private String firstName;
+
+    @Column(nullable = false, length = 20)
     private String lastName;
+
+    @Column(unique = true, nullable = false, length = 20)
     private String email;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     private Set<Role> roles;
+
 }
