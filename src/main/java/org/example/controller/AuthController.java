@@ -1,16 +1,15 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.example.jwt.JwtRequest;
-import org.example.jwt.JwtResponse;
+import org.example.dto.ChangeRoleRequest;
+import org.example.dto.LoginRequest;
+import org.example.dto.JwtResponse;
+import org.example.dto.RegisterRequest;
 import org.example.jwt.RefreshJwtRequest;
 import org.example.service.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
@@ -18,10 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @SneakyThrows
     @PostMapping("login")
-    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest) {
-        final JwtResponse token = authService.login(jwtRequest);
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
+        final JwtResponse token = authService.login(loginRequest);
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest registerRequest) {
+        final JwtResponse token = authService.register(registerRequest);
         return ResponseEntity.ok(token);
     }
 
@@ -36,4 +40,19 @@ public class AuthController {
         final JwtResponse token = authService.refresh(request.getRefreshToken());
         return ResponseEntity.ok(token);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<JwtResponse> logout(@RequestBody RefreshJwtRequest request) {
+        final JwtResponse token = authService.logout(request.getRefreshToken());
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/change-role")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> changeRole(@RequestBody ChangeRoleRequest request) {
+        authService.changeRoleToUser(request);
+        return ResponseEntity.ok("новая роль назначена пользователю");
+    }
+
+
 }
