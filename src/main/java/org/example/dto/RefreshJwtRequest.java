@@ -1,4 +1,4 @@
-package org.example.jwt;
+package org.example.dto;
 
 import lombok.Getter;
 import lombok.Setter;

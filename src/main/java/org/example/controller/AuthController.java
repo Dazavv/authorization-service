@@ -5,7 +5,7 @@ import org.example.dto.ChangeRoleRequest;
 import org.example.dto.LoginRequest;
 import org.example.dto.JwtResponse;
 import org.example.dto.RegisterRequest;
-import org.example.jwt.RefreshJwtRequest;
+import org.example.dto.RefreshJwtRequest;
 import org.example.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
